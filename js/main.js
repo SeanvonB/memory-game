@@ -1,9 +1,9 @@
 /* Create a list that holds all of your cards */
 let cardDeck = [
-    "fa-anchor", "fa-anchor", "fa-beer", "fa-beer",
-    "fa-bomb", "fa-bomb", "fa-heart", "fa-heart",
-    "fa-leaf", "fa-leaf", "fa-paw", "fa-paw",
-    "fa-rocket", "fa-rocket", "fa-umbrella", "fa-umbrella"
+    "anchor", "anchor", "beer", "beer",
+    "bomb", "bomb", "heart", "heart",
+    "leaf", "leaf", "paw", "paw",
+    "rocket", "rocket", "umbrella", "umbrella"
 ];
 let deck = document.querySelector(".deck");
 let moves = document.querySelector(".moves");
@@ -16,7 +16,9 @@ let stars = document.querySelector(".stars");
     - loop through each card and create its HTML
     - add each card's HTML to the page */
 function createCard(card) {
-    return `<li class="card"><i class="fa ${card}"></i></li>`;
+    return `<li class="card">
+                <i class="fa fa-${card}"></i>
+            </li>`;
 }
 
 function deal() {
