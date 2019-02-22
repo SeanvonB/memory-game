@@ -6,6 +6,8 @@ let cardDeck = [
     "rocket", "rocket", "umbrella", "umbrella"
 ];
 let openCards = [];
+
+let container = document.querySelector(".container");
 let deck = document.querySelector(".deck");
 let moves = document.querySelector(".moves");
 let restart = document.querySelector(".restart");
@@ -34,6 +36,7 @@ function dealCards() {
     addGameInteractions();
 
     // Reset counters
+    openCards.splice(0, openCards.length);
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -73,7 +76,11 @@ function addGameInteractions() {
     })
 
     // Add single event listener for re-initializing game
-    
+    container.addEventListener("click", function(evt) {
+        if (evt.target.classList.contains("restart")) {
+            dealCards();
+        }
+    })
 }
 
 // Confirm match and clear non-match
