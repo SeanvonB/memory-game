@@ -6,6 +6,7 @@ let cardDeck = [
     "rocket", "rocket", "umbrella", "umbrella"
 ];
 let openCards = [];
+let movesTaken = 0;
 
 let container = document.querySelector(".container");
 let deck = document.querySelector(".deck");
@@ -21,6 +22,11 @@ function createCard(card) {
             </li>`;
 }
 
+// Create star HTML from template
+function createStar(num) {
+    return `<li><i class="fa fa-star"></i></li>`.repeat(num);
+}
+
 // Initialize the game board and reset counters
 function dealCards() {
     
@@ -32,7 +38,8 @@ function dealCards() {
     let cardHTML = shuffledDeck.map(function(card) {
         return createCard(card);
     })
-    deck.innerHTML = cardHTML.join('');
+    deck.innerHTML = cardHTML.join(``);
+    stars.innerHTML = createStar(3);
     addGameInteractions();
 
     // Reset counters
@@ -97,6 +104,9 @@ function processMatch() {
         // Empty array without hoisting
         openCards.splice(0, openCards.length);
 
+        // Increment move counter and adjust rating
+        countMoves();
+
     // Set non-match flip over after delay
     } else {
         setTimeout(function() {
@@ -104,11 +114,26 @@ function processMatch() {
             openCards[1].classList.remove("open", "show");
             openCards.splice(0, openCards.length);
         }, 500);
+        countMoves();
+    }
+}
+
+function countMoves() {
+    movesTaken += 1;
+    moves.textContent = `${movesTaken}`;
+
+    // Remove stars after 12/18 moves have been taken
+    if (movesTaken == 12) {
+        stars.childNodes[2].firstChild.classList.remove("fa-star");
+        stars.childNodes[2].firstChild.classList.add("fa-star-o");
+    }
+    if (movesTaken == 18) {
+        stars.childNodes[1].firstChild.classList.remove("fa-star");
+        stars.childNodes[1].firstChild.classList.add("fa-star-o");
     }
 }
 
 /* TODO:
-    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
-    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one) */
+    + if all cards have matched, display a message with the final score */
 
 dealCards();
