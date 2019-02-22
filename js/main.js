@@ -55,14 +55,13 @@ function shuffle(array) {
 function addGameInteractions() {
 
     // Add single event listener for gameboard interactions
-    deck.addEventListener("click", function (evt) {
-        let targetCard = evt.target;
+    deck.addEventListener("click", function(evt) {
 
         // Check if event target is a face-down card
         if (openCards.length < 2
-                && targetCard.classList.contains("card")
-                && !targetCard.classList.contains("match")
-                && !targetCard.classList.contains("open")) {
+                && evt.target.classList.contains("card")
+                && !evt.target.classList.contains("match")
+                && !evt.target.classList.contains("open")) {
 
             // If so, turn card face-up
             evt.target.classList.add("open", "show");
