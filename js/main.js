@@ -1,4 +1,4 @@
-// Global variables
+// Define global variables
 let cardDeck = [
     "anchor", "anchor", "beer", "beer",
     "bomb", "bomb", "heart", "heart",
@@ -27,7 +27,7 @@ function createStar(num) {
     return `<li><i class="fa fa-star"></i></li>`.repeat(num);
 }
 
-// Initialize the game board and reset counters
+// Initialize game board and reset counters
 function dealCards() {
     
     // Clear previous game board
@@ -44,6 +44,8 @@ function dealCards() {
 
     // Reset counters
     openCards.splice(0, openCards.length);
+    movesTaken = 0;
+    moves.textContent = `${movesTaken}`;
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -107,7 +109,7 @@ function processMatch() {
         // Increment move counter and adjust rating
         countMoves();
 
-    // Set non-match flip over after delay
+    // Set non-match to flip over after delay
     } else {
         setTimeout(function() {
             openCards[0].classList.remove("open", "show");
@@ -122,7 +124,7 @@ function countMoves() {
     movesTaken += 1;
     moves.textContent = `${movesTaken}`;
 
-    // Remove stars after 12/18 moves have been taken
+    // Remove stars after 12/18 moves are taken
     if (movesTaken == 12) {
         stars.childNodes[2].firstChild.classList.remove("fa-star");
         stars.childNodes[2].firstChild.classList.add("fa-star-o");
@@ -132,8 +134,5 @@ function countMoves() {
         stars.childNodes[1].firstChild.classList.add("fa-star-o");
     }
 }
-
-/* TODO:
-    + if all cards have matched, display a message with the final score */
 
 dealCards();
