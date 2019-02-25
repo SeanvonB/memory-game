@@ -87,6 +87,11 @@ h1 {
     margin-bottom: 10px;
 }
 
+.score-panel .clock {
+    display: inline-block;
+    margin: 0 0 0 10px;
+}
+
 .score-panel i {
     pointer-events: none;
 }

@@ -7,7 +7,11 @@ let cardDeck = [
 ];
 let openCards = [];
 let movesTaken = 0;
+let timer = 0;
+    let minutes = 0;
+    let seconds = 0;
 
+let clock = document.querySelector(".clock");
 let container = document.querySelector(".container");
 let deck = document.querySelector(".deck");
 let moves = document.querySelector(".moves");
@@ -46,6 +50,7 @@ function dealCards() {
     openCards.splice(0, openCards.length);
     movesTaken = 0;
     moves.textContent = `${movesTaken}`;
+    stopTimer();
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -78,6 +83,11 @@ function addGameInteractions() {
             // If so, turn card face-up
             evt.target.classList.add("open", "show");
             openCards.push(evt.target);
+
+            // Start timer
+            if (timer == 0) {
+                startTimer();
+            }
 
             // Once two are shown...
             if (openCards.length == 2) {processMatch()}
@@ -132,6 +142,31 @@ function countMoves() {
     if (movesTaken == 18) {
         stars.childNodes[1].firstChild.classList.remove("fa-star");
         stars.childNodes[1].firstChild.classList.add("fa-star-o");
+    }
+}
+
+function startTimer() {
+    timer = setInterval(function() {
+        seconds++;
+        if (seconds == 60) {
+            seconds = 0;
+            minutes++;
+        }
+        if (seconds < 10) {
+            clock.textContent = `${minutes}:0${seconds}`;
+        } else {
+        clock.textContent = `${minutes}:${seconds}`;
+        }
+    }, 1000);
+}
+
+function stopTimer() {
+    if (timer) {
+        clearInterval(timer);
+        timer = 0;
+            minutes = 0;
+            seconds = 0;
+        clock.textContent = `${minutes}:0${seconds}`;
     }
 }
 
