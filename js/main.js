@@ -6,6 +6,7 @@ let cardDeck = [
     "rocket", "rocket", "umbrella", "umbrella"
 ];
 let openCards = [];
+let matchCounter = 0;
 let moveCounter = 0;
 let timer = 0;
     let minutes = 0;
@@ -14,6 +15,7 @@ let timer = 0;
 let clock = document.querySelector(".clock");
 let container = document.querySelector(".container");
 let deck = document.querySelector(".deck");
+let modal = document.querySelector(".modal");
 let moves = document.querySelector(".moves");
 let restart = document.querySelector(".restart");
 let stars = document.querySelector(".stars");
@@ -26,6 +28,15 @@ function createCard(card) {
             </li>`;
 }
 
+// Create modal HTML from template
+function createModal() {
+    return `<ul class="stars">${stars.innerHTML}</ul>
+            <li>You finished in</li>
+            <li class="clock">${minutes}:0${seconds}</li>
+            <li>Congratulations!</li>
+            <li><button class="restart">Play Again</li>`;
+}
+
 // Create star HTML from template
 function createStar(num) {
     return `<li><i class="fa fa-star"></i></li>`.repeat(num);
@@ -36,6 +47,7 @@ function dealCards() {
     
     // Clear previous game board
     while (deck.firstChild) deck.removeChild(deck.firstChild);
+    while (modal.firstChild) modal.removeChild(modal.firstChild);
 
     // Create new, randomized game board
     let shuffledDeck = shuffle(cardDeck);
@@ -48,6 +60,7 @@ function dealCards() {
 
     // Reset counters
     openCards.splice(0, openCards.length);
+    matchCounter = 0;
     moveCounter = 0;
     moves.textContent = `${moveCounter}`;
     resetTimer();
@@ -85,9 +98,7 @@ function addGameInteractions() {
             openCards.push(evt.target);
 
             // Start timer
-            if (timer == 0) {
-                startTimer();
-            }
+            if (timer == 0) {startTimer()}
 
             // Once two are shown...
             if (openCards.length == 2) {processMatch()}
@@ -116,8 +127,15 @@ function processMatch() {
         // Empty array without hoisting
         openCards.splice(0, openCards.length);
 
-        // Increment move counter and adjust rating
+        // Increment match and move counters and adjust rating
         countMoves();
+        matchCounter++;
+
+        // Confirm all matches and open win modal
+        if (matchCounter == 8) {
+            pauseTimer();
+            modal.innerHTML = createModal();
+        }
 
     // Set non-match to flip over after delay
     } else {
@@ -161,9 +179,7 @@ function startTimer() {
 }
 
 function pauseTimer() {
-    if (timer) {
-        clearInterval(timer);
-    }
+    if (timer) {clearInterval(timer);}
 }
 
 function resetTimer() {

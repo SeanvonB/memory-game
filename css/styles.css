@@ -79,6 +79,71 @@ h1 {
     font-size: 33px;
 }
 
+/* Styles for the win modal */
+
+.modal {
+    position: absolute;
+    z-index: 1;
+
+    color: #ffffff;
+    font-size: 48pt;
+    font-weight: 900;
+    line-height: 1;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    text-shadow:
+        1pt 1pt 1pt #2e3d49,
+        -1pt 1pt 1pt #2e3d49,
+        1pt -1pt 1pt #2e3d49,
+        -1pt -1pt 1pt #2e3d49;
+}
+
+.modal button {
+    background-color: #ffa000;
+    border: none;
+    box-shadow:
+        1pt 1pt 1pt #2e3d49,
+        -1pt 1pt 1pt #2e3d49,
+        1pt -1pt 1pt #2e3d49,
+        -1pt -1pt 1pt #2e3d49;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 900;
+    margin: 0;
+    padding: 20px 30px;
+    text-shadow:
+        1pt 1pt 1pt #2e3d49,
+        -1pt 1pt 1pt #2e3d49,
+        1pt -1pt 1pt #2e3d49,
+        -1pt -1pt 1pt #2e3d49;
+}
+
+.modal button:hover {
+    background-color: #ffb840;
+}
+
+.modal .clock {
+    color: #dc143c;
+}
+
+.modal .stars {
+    color: #ffd700;
+    display: inline-block;
+    font-size: 64pt;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.modal .stars li {
+    display: inline-block;
+    list-style: none;
+    margin: 5px;
+}
+
 /* Styles for the score panel */
 
 .score-panel {
