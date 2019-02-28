@@ -6,7 +6,7 @@ let cardDeck = [
     "rocket", "rocket", "umbrella", "umbrella"
 ];
 let openCards = [];
-let movesTaken = 0;
+let moveCounter = 0;
 let timer = 0;
     let minutes = 0;
     let seconds = 0;
@@ -48,9 +48,9 @@ function dealCards() {
 
     // Reset counters
     openCards.splice(0, openCards.length);
-    movesTaken = 0;
-    moves.textContent = `${movesTaken}`;
-    stopTimer();
+    moveCounter = 0;
+    moves.textContent = `${moveCounter}`;
+    resetTimer();
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -131,15 +131,15 @@ function processMatch() {
 }
 
 function countMoves() {
-    movesTaken += 1;
-    moves.textContent = `${movesTaken}`;
+    moveCounter += 1;
+    moves.textContent = `${moveCounter}`;
 
     // Remove stars after 12/18 moves are taken
-    if (movesTaken == 12) {
+    if (moveCounter == 12) {
         stars.childNodes[2].firstChild.classList.remove("fa-star");
         stars.childNodes[2].firstChild.classList.add("fa-star-o");
     }
-    if (movesTaken == 18) {
+    if (moveCounter == 18) {
         stars.childNodes[1].firstChild.classList.remove("fa-star");
         stars.childNodes[1].firstChild.classList.add("fa-star-o");
     }
@@ -160,7 +160,13 @@ function startTimer() {
     }, 1000);
 }
 
-function stopTimer() {
+function pauseTimer() {
+    if (timer) {
+        clearInterval(timer);
+    }
+}
+
+function resetTimer() {
     if (timer) {
         clearInterval(timer);
         timer = 0;
