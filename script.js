@@ -1,195 +1,211 @@
-// Define global variables
-let cardDeck = [
-    "anchor", "anchor", "beer", "beer",
-    "bomb", "bomb", "heart", "heart",
-    "leaf", "leaf", "paw", "paw",
-    "rocket", "rocket", "umbrella", "umbrella"
+// Globals
+const board = document.querySelector(".board");
+const clock = document.querySelector(".clock");
+const modal = document.querySelector(".modal");
+const moves = document.querySelector(".moves");
+const restart = document.querySelector(".restart");
+const stars = document.querySelector(".stars");
+let deck = [
+	"anchor",
+	"anchor",
+	"beer",
+	"beer",
+	"bomb",
+	"bomb",
+	"heart",
+	"heart",
+	"leaf",
+	"leaf",
+	"paw",
+	"paw",
+	"rocket",
+	"rocket",
+	"umbrella",
+	"umbrella",
 ];
-let openCards = [];
+let faceup = [];
 let matchCounter = 0;
+let minutes = 0;
 let moveCounter = 0;
+let seconds = 0;
 let timer = 0;
-    let minutes = 0;
-    let seconds = 0;
 
-let clock = document.querySelector(".clock");
-let container = document.querySelector(".container");
-let deck = document.querySelector(".deck");
-let modal = document.querySelector(".modal");
-let moves = document.querySelector(".moves");
-let restart = document.querySelector(".restart");
-let stars = document.querySelector(".stars");
+// Create win modal and add to DOM
+function announceWin() {
+	// Copy children from `star` element to create banner
+	let children = stars.childNodes;
+	let ul = document.createElement("ul");
+	ul.classList.add("stars");
+	children.forEach((child) => {
+		ul.appendChild(child.cloneNode(true));
+	});
+	modal.appendChild(ul);
 
+	// Add modal text content
+	let li1 = document.createElement("li");
+	li1.textContent = "You finished in";
+	modal.appendChild(li1);
+	let li2 = document.createElement("li");
+	if (seconds < 10) {
+		li2.textContent = `${minutes}:0${seconds}`;
+	} else {
+		li2.textContent = `${minutes}:${seconds}`;
+	}
+	modal.appendChild(li2);
+	let li3 = document.createElement("li");
+	li3.textContent = "Congratulations!";
+	modal.appendChild(li3);
 
-// Create card HTML from template
-function createCard(card) {
-    return `<li class="card" data-type="${card}">
-                <i class="fa fa-${card}"></i>
-            </li>`;
+	// Add replay button
+	let li4 = document.createElement("li");
+	let button = document.createElement("button");
+	button.addEventListener("click", dealCards);
+	button.textContent = "Play Again";
+	li4.appendChild(button);
+	modal.appendChild(li4);
 }
 
-// Create modal HTML from template
-function createModal() {
-    return `<ul class="stars">${stars.innerHTML}</ul>
-            <li>You finished in</li>
-            <li class="clock">${minutes}:0${seconds}</li>
-            <li>Congratulations!</li>
-            <li><button class="restart">Play Again</li>`;
-}
-
-// Create star HTML from template
-function createStar(num) {
-    return `<li><i class="fa fa-star"></i></li>`.repeat(num);
-}
-
-// Initialize game board and reset counters
-function dealCards() {
-    
-    // Clear previous game board
-    while (deck.firstChild) deck.removeChild(deck.firstChild);
-    while (modal.firstChild) modal.removeChild(modal.firstChild);
-
-    // Create new, randomized game board
-    let shuffledDeck = shuffle(cardDeck);
-    let cardHTML = shuffledDeck.map(function(card) {
-        return createCard(card);
-    })
-    deck.innerHTML = cardHTML.join(``);
-    stars.innerHTML = createStar(3);
-    addGameInteractions();
-
-    // Reset counters
-    openCards.splice(0, openCards.length);
-    matchCounter = 0;
-    moveCounter = 0;
-    moves.textContent = `${moveCounter}`;
-    resetTimer();
-}
-
-// Shuffle function from http://stackoverflow.com/a/2450976
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-}
-
-// Add event listeners to board creation
-function addGameInteractions() {
-
-    // Add single event listener for gameboard interactions
-    deck.addEventListener("click", function(evt) {
-
-        // Check if event target is a face-down card
-        if (openCards.length < 2
-                && evt.target.classList.contains("card")
-                && !evt.target.classList.contains("match")
-                && !evt.target.classList.contains("open")) {
-
-            // If so, turn card face-up
-            evt.target.classList.add("open", "show");
-            openCards.push(evt.target);
-
-            // Start timer
-            if (timer == 0) {startTimer()}
-
-            // Once two are shown...
-            if (openCards.length == 2) {processMatch()}
-        }
-    })
-
-    // Add single event listener for re-initializing game
-    container.addEventListener("click", function(evt) {
-        if (evt.target.classList.contains("restart")) {
-            dealCards();
-        }
-    })
-}
-
-// Confirm match and clear non-match
-function processMatch() {
-
-    // Set match to remain open
-    if (openCards[0].dataset.type
-        == openCards[1].dataset.type) {
-        openCards[0].classList.add("match");
-        openCards[1].classList.add("match");
-        openCards[0].classList.remove("open", "show");
-        openCards[1].classList.remove("open", "show");
-
-        // Empty array without hoisting
-        openCards.splice(0, openCards.length);
-
-        // Increment match and move counters and adjust rating
-        countMoves();
-        matchCounter++;
-
-        // Confirm all matches and open win modal
-        if (matchCounter == 8) {
-            pauseTimer();
-            modal.innerHTML = createModal();
-        }
-
-    // Set non-match to flip over after delay
-    } else {
-        setTimeout(function() {
-            openCards[0].classList.remove("open", "show");
-            openCards[1].classList.remove("open", "show");
-            openCards.splice(0, openCards.length);
-        }, 500);
-        countMoves();
-    }
-}
-
+// Increment moveCounter and update score
 function countMoves() {
-    moveCounter += 1;
-    moves.textContent = `${moveCounter}`;
-
-    // Remove stars after 12/18 moves are taken
-    if (moveCounter == 12) {
-        stars.childNodes[2].firstChild.classList.remove("fa-star");
-        stars.childNodes[2].firstChild.classList.add("fa-star-o");
-    }
-    if (moveCounter == 18) {
-        stars.childNodes[1].firstChild.classList.remove("fa-star");
-        stars.childNodes[1].firstChild.classList.add("fa-star-o");
-    }
+	moveCounter += 1;
+	moves.textContent = `${moveCounter}`;
+	if (moveCounter == 12) {
+		stars.childNodes[2].classList.remove("fa-star");
+		stars.childNodes[2].classList.add("fa-star-o");
+	}
+	if (moveCounter == 18) {
+		stars.childNodes[1].classList.remove("fa-star");
+		stars.childNodes[1].classList.add("fa-star-o");
+	}
 }
 
-function startTimer() {
-    timer = setInterval(function() {
-        seconds++;
-        if (seconds == 60) {
-            seconds = 0;
-            minutes++;
-        }
-        if (seconds < 10) {
-            clock.textContent = `${minutes}:0${seconds}`;
-        } else {
-        clock.textContent = `${minutes}:${seconds}`;
-        }
-    }, 1000);
+// Clear previous game and start new one
+function dealCards() {
+	// Clear previous game
+	while (modal.firstChild) modal.removeChild(modal.firstChild);
+	while (board.firstChild) board.removeChild(board.firstChild);
+	faceup.splice(0, faceup.length);
+	matchCounter = 0;
+	moveCounter = 0;
+	moves.textContent = 0;
+	resetTimer();
+	resetStars();
+
+	// Shuffle deck and start new one
+	let shuffledDeck = shuffle(deck);
+	shuffledDeck.forEach((card) => {
+		let elem = document.createElement("li");
+		elem.classList.add("fa", `fa-${card}`, "card");
+		elem.setAttribute("data-type", card);
+		board.appendChild(elem);
+	});
 }
 
-function pauseTimer() {
-    if (timer) {clearInterval(timer);}
+// Check for match and handle result
+function processMatch() {
+	if (faceup[0].dataset.type == faceup[1].dataset.type) {
+		// Keep matches faceup
+		faceup[0].classList.add("match");
+		faceup[1].classList.add("match");
+		faceup[0].classList.remove("faceup");
+		faceup[1].classList.remove("faceup");
+		faceup.splice(0, faceup.length);
+
+		// Update state and check for win
+		countMoves();
+		matchCounter++;
+		if (matchCounter == 8) {
+			stopTimer();
+			announceWin();
+		}
+
+		// Put non-matches facedown after brief delay
+	} else {
+		setTimeout(function () {
+			faceup[0].classList.remove("faceup");
+			faceup[1].classList.remove("faceup");
+			faceup.splice(0, faceup.length);
+		}, 500);
+		countMoves();
+	}
+}
+
+function resetStars() {
+	while (stars.firstChild) stars.removeChild(stars.firstChild);
+	for (let i = 0; i < 3; i++) {
+		let star = document.createElement("li");
+		star.classList.add("fa", "fa-star", "star");
+		stars.appendChild(star);
+	}
 }
 
 function resetTimer() {
-    if (timer) {
-        clearInterval(timer);
-        timer = 0;
-            minutes = 0;
-            seconds = 0;
-        clock.textContent = `${minutes}:0${seconds}`;
-    }
+	if (timer) {
+		clearInterval(timer);
+		timer = 0;
+		minutes = 0;
+		seconds = 0;
+		clock.textContent = `${minutes}:0${seconds}`;
+	}
 }
 
+// Shuffle deck using Fisher-Yates shuffle
+// Source: https://bost.ocks.org/mike/shuffle/
+function shuffle(array) {
+	let current = array.length,
+		temp,
+		rand;
+
+	while (current) {
+		rand = Math.floor(Math.random() * current);
+		current -= 1;
+		temp = array[current];
+		array[current] = array[rand];
+		array[rand] = temp;
+	}
+	return array;
+}
+
+function startTimer() {
+	timer = setInterval(function () {
+		seconds++;
+		if (seconds == 60) {
+			seconds = 0;
+			minutes++;
+		}
+		if (seconds < 10) {
+			clock.textContent = `${minutes}:0${seconds}`;
+		} else {
+			clock.textContent = `${minutes}:${seconds}`;
+		}
+	}, 1000);
+}
+
+function stopTimer() {
+	if (timer) {
+		clearInterval(timer);
+	}
+}
+
+// AddEventListeners
+board.addEventListener("click", function (e) {
+	if (
+		faceup.length < 2 &&
+		e.target.classList.contains("card") &&
+		!e.target.classList.contains("match") &&
+		!e.target.classList.contains("faceup")
+	) {
+		e.target.classList.add("faceup");
+		faceup.push(e.target);
+		if (timer == 0) {
+			startTimer();
+		}
+		if (faceup.length == 2) {
+			processMatch();
+		}
+	}
+});
+restart.addEventListener("click", dealCards);
+
+// Initial state
 dealCards();
