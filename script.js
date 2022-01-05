@@ -6,22 +6,22 @@ const moves = document.querySelector(".moves");
 const restart = document.querySelector(".restart");
 const stars = document.querySelector(".stars");
 let deck = [
-	"anchor",
-	"anchor",
-	"beer",
-	"beer",
-	"bomb",
-	"bomb",
-	"heart",
-	"heart",
-	"leaf",
-	"leaf",
-	"paw",
-	"paw",
-	"rocket",
-	"rocket",
-	"umbrella",
-	"umbrella",
+	"♥",
+	"♥",
+	"♦",
+	"♦",
+	"♣",
+	"♣",
+	"♠",
+	"♠",
+	"♫",
+	"♫",
+	"☼",
+	"☼",
+	"∞",
+	"∞",
+	"≈",
+	"≈",
 ];
 let faceup = [];
 let matchCounter = 0;
@@ -70,12 +70,10 @@ function countMoves() {
 	moveCounter += 1;
 	moves.textContent = `${moveCounter}`;
 	if (moveCounter == 12) {
-		stars.childNodes[2].classList.remove("fa-star");
-		stars.childNodes[2].classList.add("fa-star-o");
+		stars.childNodes[2].textContent = "☆";
 	}
 	if (moveCounter == 18) {
-		stars.childNodes[1].classList.remove("fa-star");
-		stars.childNodes[1].classList.add("fa-star-o");
+		stars.childNodes[1].textContent = "☆";
 	}
 }
 
@@ -93,17 +91,52 @@ function dealCards() {
 
 	// Shuffle deck and start new one
 	let shuffledDeck = shuffle(deck);
-	shuffledDeck.forEach((card) => {
-		let elem = document.createElement("li");
-		elem.classList.add("fa", `fa-${card}`, "card");
-		elem.setAttribute("data-type", card);
-		board.appendChild(elem);
+	shuffledDeck.forEach((suit) => {
+		let card = document.createElement("li");
+		let inner = document.createElement("div");
+		let front = document.createElement("div");
+		let back = document.createElement("div");
+
+		// Add listeners to flipping element: ".card-inner"
+		inner.addEventListener("click", function () {
+			if (
+				faceup.length < 2 &&
+				!this.classList.contains("match") &&
+				!this.classList.contains("faceup")
+			) {
+				this.classList.add("faceup");
+				faceup.push(this);
+				if (timer == 0) {
+					startTimer();
+				}
+				if (faceup.length == 2) {
+					processMatch();
+				}
+			}
+		});
+
+		// Assemble cards matching into the following template:
+		// <li class="card">
+		// 		<div class="card-inner">
+		//			<div class="card-front">`suit`</div>
+		//			<div class="card-back"></div>
+		//		</div>
+		// </li>
+		card.classList.add("card");
+		inner.classList.add("card-inner");
+		front.classList.add("card-front");
+		front.textContent = suit;
+		back.classList.add("card-back");
+		inner.appendChild(front);
+		inner.appendChild(back);
+		card.appendChild(inner);
+		board.appendChild(card);
 	});
 }
 
 // Check for match and handle result
 function processMatch() {
-	if (faceup[0].dataset.type == faceup[1].dataset.type) {
+	if (faceup[0].firstChild.textContent == faceup[1].firstChild.textContent) {
 		// Keep matches faceup
 		faceup[0].classList.add("match");
 		faceup[1].classList.add("match");
@@ -125,7 +158,7 @@ function processMatch() {
 			faceup[0].classList.remove("faceup");
 			faceup[1].classList.remove("faceup");
 			faceup.splice(0, faceup.length);
-		}, 500);
+		}, 750);
 		countMoves();
 	}
 }
@@ -134,7 +167,7 @@ function resetStars() {
 	while (stars.firstChild) stars.removeChild(stars.firstChild);
 	for (let i = 0; i < 3; i++) {
 		let star = document.createElement("li");
-		star.classList.add("fa", "fa-star", "star");
+		star.textContent = "★";
 		stars.appendChild(star);
 	}
 }
@@ -188,23 +221,6 @@ function stopTimer() {
 }
 
 // AddEventListeners
-board.addEventListener("click", function (e) {
-	if (
-		faceup.length < 2 &&
-		e.target.classList.contains("card") &&
-		!e.target.classList.contains("match") &&
-		!e.target.classList.contains("faceup")
-	) {
-		e.target.classList.add("faceup");
-		faceup.push(e.target);
-		if (timer == 0) {
-			startTimer();
-		}
-		if (faceup.length == 2) {
-			processMatch();
-		}
-	}
-});
 restart.addEventListener("click", dealCards);
 
 // Initial state
