@@ -4,7 +4,7 @@ const clock = document.querySelector(".clock");
 const modal = document.querySelector(".modal");
 const moves = document.querySelector(".moves");
 const restart = document.querySelector(".restart");
-const stars = document.querySelector(".stars");
+const score = document.querySelector(".score");
 let deck = [
 	"🌑",
 	"🌑",
@@ -33,7 +33,7 @@ let timer = 0;
 // Create win modal and add to DOM
 function announceWin() {
 	// Copy children from `star` element to create banner
-	let children = stars.childNodes;
+	let children = score.childNodes;
 	let ul = document.createElement("ul");
 	ul.classList.add("stars");
 	children.forEach((child) => {
@@ -70,10 +70,10 @@ function countMoves() {
 	moveCounter += 1;
 	moves.textContent = `${moveCounter}`;
 	if (moveCounter == 12) {
-		stars.childNodes[2].textContent = "☆";
+		score.removeChild(score.lastElementChild);
 	}
 	if (moveCounter == 18) {
-		stars.childNodes[1].textContent = "☆";
+		score.removeChild(score.lastElementChild);
 	}
 }
 
@@ -164,11 +164,12 @@ function processMatch() {
 }
 
 function resetStars() {
-	while (stars.firstChild) stars.removeChild(stars.firstChild);
+	while (score.firstChild) score.removeChild(score.firstChild);
 	for (let i = 0; i < 3; i++) {
 		let star = document.createElement("li");
-		star.textContent = "★";
-		stars.appendChild(star);
+		star.classList.add("star");
+		star.textContent = "⭐";
+		score.appendChild(star);
 	}
 }
 
@@ -178,7 +179,7 @@ function resetTimer() {
 		timer = 0;
 		minutes = 0;
 		seconds = 0;
-		clock.textContent = `${minutes}:0${seconds}`;
+		clock.textContent = `${minutes} : 0${seconds}`;
 	}
 }
 
@@ -207,9 +208,9 @@ function startTimer() {
 			minutes++;
 		}
 		if (seconds < 10) {
-			clock.textContent = `${minutes}:0${seconds}`;
+			clock.textContent = `${minutes} : 0${seconds}`;
 		} else {
-			clock.textContent = `${minutes}:${seconds}`;
+			clock.textContent = `${minutes} : ${seconds}`;
 		}
 	}, 1000);
 }

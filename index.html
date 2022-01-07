@@ -7,21 +7,31 @@
 		<title>Matching Game</title>
 		<link rel="icon" type="image/x-icon" href="favicon.ico" />
 		<link rel="stylesheet" href="styles.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Luckiest+Guy"
+			rel="stylesheet"
+		/>
 		<script src="script.js" defer></script>
 	</head>
 	<body>
 		<main>
 			<header class="score-panel">
-				<ul class="stars"></ul>
-				<div class="move-counter">
-					<div>Moves: </div>
-					<div class="moves">0</div>
+				<div class="score-panel left">
+					<ul class="score"></ul>
+					<div class="move-counter">
+						<div>Moves :</div>
+						<div class="moves">0</div>
+					</div>
 				</div>
-				<div class="clock">0:00</div>
-				<div class="restart"></div>
+				<div class="score-panel right">
+					<button class="restart">Restart</button>
+					<div class="clock">0 : 00</div>
+				</div>
 			</header>
 			<ul class="modal"></ul>
 			<ul class="board"></ul>
-		</div>
+		</main>
 	</body>
 </html>
