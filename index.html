@@ -10,16 +10,16 @@
 		<script src="script.js" defer></script>
 	</head>
 	<body>
-		<div class="container">
-			<header>
-				<h1>Matching Game</h1>
-			</header>
-			<section class="score-panel">
+		<main>
+			<header class="score-panel">
 				<ul class="stars"></ul>
-				<span class="moves">0</span> Moves
-				<span class="clock">0:00</span>
-				<div class="fa fa-repeat restart"></div>
-			</section>
+				<div class="move-counter">
+					<div>Moves: </div>
+					<div class="moves">0</div>
+				</div>
+				<div class="clock">0:00</div>
+				<div class="restart"></div>
+			</header>
 			<ul class="modal"></ul>
 			<ul class="board"></ul>
 		</div>

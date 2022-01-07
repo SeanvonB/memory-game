@@ -6,22 +6,22 @@ const moves = document.querySelector(".moves");
 const restart = document.querySelector(".restart");
 const stars = document.querySelector(".stars");
 let deck = [
-	"♥",
-	"♥",
-	"♦",
-	"♦",
-	"♣",
-	"♣",
-	"♠",
-	"♠",
-	"♫",
-	"♫",
-	"☼",
-	"☼",
-	"∞",
-	"∞",
-	"≈",
-	"≈",
+	"🌑",
+	"🌑",
+	"🌒",
+	"🌒",
+	"🌓",
+	"🌓",
+	"🌔",
+	"🌔",
+	"🌕",
+	"🌕",
+	"🌖",
+	"🌖",
+	"🌗",
+	"🌗",
+	"🌘",
+	"🌘",
 ];
 let faceup = [];
 let matchCounter = 0;
@@ -124,7 +124,7 @@ function dealCards() {
 		// </li>
 		card.classList.add("card");
 		inner.classList.add("card-inner");
-		front.classList.add("card-front");
+		front.classList.add("card-front", `${suit}`);
 		front.textContent = suit;
 		back.classList.add("card-back");
 		inner.appendChild(front);
@@ -158,7 +158,7 @@ function processMatch() {
 			faceup[0].classList.remove("faceup");
 			faceup[1].classList.remove("faceup");
 			faceup.splice(0, faceup.length);
-		}, 750);
+		}, 1000);
 		countMoves();
 	}
 }
