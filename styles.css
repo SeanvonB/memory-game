@@ -1,10 +1,6 @@
 :root {
 	/* Color Palette */
-	--accent-back: rgba(17, 102, 187, 0.5);
 	--background: #555;
-	--highlight-front: #fd3;
-	--lowlight-front: #777;
-	--primary: #999;
 }
 
 * {
@@ -41,14 +37,22 @@ header {
 
 main {
 	align-items: center;
-	background-color: var(--primary);
-	box-shadow: 4px 8px 8px 0 #333;
+	background-color: #d94; /* Average of background image */
+	background-image: url("images/background.jpg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	border-bottom: 8px solid #777;
+	border-top: 8px solid #777;
+	box-shadow: inset 0 -4px 0 0 #999, inset 0 4px 0 0 #555,
+		inset 0 8px 12px 0 #111, 0 -4px 0 0 #999, 0 4px 0 0 #555,
+		0 8px 12px 0 #111;
 	display: flex;
 	flex-direction: column;
 	height: calc(100% - 48px);
 	justify-content: center;
 	max-height: 800px;
-	padding: 8px 0;
+	padding: 16px 0 8px;
 	width: 100%;
 }
 
@@ -99,35 +103,35 @@ ul {
 	/* Ride-Waite Plaid */
 	background: repeating-linear-gradient(
 			45deg,
-			var(--accent-back) 0 1px,
+			rgba(17, 102, 187, 0.5) 0 1px,
 			transparent 1px 11px,
-			var(--accent-back) 11px 12px,
+			rgba(17, 102, 187, 0.5) 11px 12px,
 			transparent 12px 13px,
-			var(--accent-back) 13px 14px,
+			rgba(17, 102, 187, 0.5) 13px 14px,
 			transparent 14px 15px,
-			var(--accent-back) 15px 16px,
+			rgba(17, 102, 187, 0.5) 15px 16px,
 			transparent 16px 17px,
-			var(--accent-back) 17px 18px,
+			rgba(17, 102, 187, 0.5) 17px 18px,
 			transparent 18px 21px,
-			var(--accent-back) 21px 24px,
+			rgba(17, 102, 187, 0.5) 21px 24px,
 			transparent 24px 25px,
-			var(--accent-back) 25px 26px,
+			rgba(17, 102, 187, 0.5) 25px 26px,
 			transparent 26px 27px,
-			var(--accent-back) 27px 30px,
+			rgba(17, 102, 187, 0.5) 27px 30px,
 			transparent 30px 31px,
-			var(--accent-back) 31px 32px,
+			rgba(17, 102, 187, 0.5) 31px 32px,
 			transparent 32px 33px,
-			var(--accent-back) 33px 36px,
+			rgba(17, 102, 187, 0.5) 33px 36px,
 			transparent 36px 39px,
-			var(--accent-back) 39px 40px,
+			rgba(17, 102, 187, 0.5) 39px 40px,
 			transparent 40px 41px,
-			var(--accent-back) 41px 42px,
+			rgba(17, 102, 187, 0.5) 41px 42px,
 			transparent 42px 43px,
-			var(--accent-back) 43px 44px,
+			rgba(17, 102, 187, 0.5) 43px 44px,
 			transparent 44px 45px,
-			var(--accent-back) 45px 46px,
+			rgba(17, 102, 187, 0.5) 45px 46px,
 			transparent 46px 56px,
-			var(--accent-back) 56px 57px
+			rgba(17, 102, 187, 0.5) 56px 57px
 		),
 		repeating-linear-gradient(
 			135deg,
@@ -172,7 +176,7 @@ ul {
 .card-inner {
 	border-radius: 12px;
 	border: 4px solid transparent;
-	box-shadow: 4px 4px 4px 0 #555;
+	box-shadow: 2px 2px 8px 0 #111;
 	cursor: pointer;
 	height: 100%;
 	transform-style: preserve-3d;
@@ -182,7 +186,7 @@ ul {
 
 .card-inner.faceup,
 .card-inner.match {
-	box-shadow: -4px 4px 4px 0 #555;
+	box-shadow: -2px 2px 8px 0 #111;
 	cursor: auto;
 	transform: rotateY(180deg);
 }
@@ -193,7 +197,7 @@ ul {
 	cursor: default;
 	text-shadow: 0 -1px #fff, 1px 0 #fff, 0 -1px #fff, -1px 0 #fff,
 		-1px -1px #fff, 1px -1px #fff, 1px 1px #fff, -1px 1px #fff,
-		4px 4px 4px #555;
+		2px 2px 8px #111;
 }
 
 .move-counter {
@@ -207,7 +211,7 @@ ul {
 	background-color: #b22;
 	border-radius: 8px;
 	border: 2px solid #000;
-	box-shadow: 0 0 0 2px #fff, 4px 4px 4px 0 #555;
+	box-shadow: 0 0 0 2px #fff, 2px 2px 8px #111;
 	color: #fff;
 	cursor: pointer;
 	display: flex;
@@ -242,10 +246,10 @@ ul {
 
 .star {
 	align-items: center;
-	background-color: var(--accent-back);
+	background-color: #16b;
 	border-radius: 40px;
 	border: 2px solid #000;
-	box-shadow: 0 0 0 2px #fff, 4px 4px 4px 0 #555;
+	box-shadow: 0 0 0 2px #fff, 2px 2px 8px #111;
 	cursor: default;
 	display: flex;
 	height: 40px;
@@ -256,59 +260,35 @@ ul {
 }
 
 .🌑 {
-	background-color: var(--lowlight-front);
+	background-color: #777;
 }
 
 .🌒 {
-	background-image: linear-gradient(
-		to right,
-		var(--lowlight-front) 50%,
-		var(--highlight-front)
-	);
+	background-image: linear-gradient(to right, #777 50%, #fd3);
 }
 
 .🌓 {
-	background-image: linear-gradient(
-		to right,
-		var(--lowlight-front) 25%,
-		var(--highlight-front)
-	);
+	background-image: linear-gradient(to right, #777 25%, #fd3);
 }
 
 .🌔 {
-	background-image: linear-gradient(
-		to right,
-		var(--lowlight-front),
-		var(--highlight-front)
-	);
+	background-image: linear-gradient(to right, #777, #fd3);
 }
 
 .🌕 {
-	background-color: var(--highlight-front);
+	background-color: #fd3;
 }
 
 .🌖 {
-	background-image: linear-gradient(
-		to right,
-		var(--highlight-front),
-		var(--lowlight-front)
-	);
+	background-image: linear-gradient(to right, #fd3, #777);
 }
 
 .🌗 {
-	background-image: linear-gradient(
-		to right,
-		var(--highlight-front) 25%,
-		var(--lowlight-front)
-	);
+	background-image: linear-gradient(to right, #fd3 25%, #777);
 }
 
 .🌘 {
-	background-image: linear-gradient(
-		to right,
-		var(--highlight-front) 50%,
-		var(--lowlight-front)
-	);
+	background-image: linear-gradient(to right, #fd3 50%, #777);
 }
 
 @media (hover: hover) {
