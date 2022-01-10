@@ -192,8 +192,17 @@ ul {
 }
 
 .card-front {
+	background-color: #333;
 	padding-bottom: 8px;
 	transform: rotateY(180deg);
+}
+
+.card-front img {
+	background-color: #000;
+	border: 4px solid #000;
+	box-shadow: 0 0 0 4px #fff;
+	border-radius: 100px;
+	width: 75%;
 }
 
 .card-inner {
@@ -252,13 +261,15 @@ ul {
 	box-shadow: 0 0 0 2px #fff, 2px 2px 8px #111;
 	cursor: default;
 	display: flex;
-	font-size: 24px;
 	height: 40px;
 	justify-content: center;
 	margin: 4px;
-	padding-bottom: 4px;
-	text-shadow: none;
+	padding: 0 0 2px 1px;
 	width: 40px;
+}
+
+.star img {
+	width: 75%;
 }
 
 .modal {
@@ -317,35 +328,35 @@ ul {
 }
 
 .🌑 {
-	background-color: #777;
+	background-color: #567;
 }
 
 .🌒 {
-	background-image: linear-gradient(to right, #777 50%, #fd3);
+	background-image: linear-gradient(to right, #567 75%, #fc4 75%);
 }
 
 .🌓 {
-	background-image: linear-gradient(to right, #777 25%, #fd3);
+	background-image: linear-gradient(to right, #567 50%, #fc4 50%);
 }
 
 .🌔 {
-	background-image: linear-gradient(to right, #777, #fd3);
+	background-image: linear-gradient(to right, #567 25%, #fc4 25%);
 }
 
 .🌕 {
-	background-color: #fd3;
+	background-color: #fc4;
 }
 
 .🌖 {
-	background-image: linear-gradient(to right, #fd3, #777);
+	background-image: linear-gradient(to right, #fc4 75%, #567 75%);
 }
 
 .🌗 {
-	background-image: linear-gradient(to right, #fd3 25%, #777);
+	background-image: linear-gradient(to right, #fc4 50%, #567 50%);
 }
 
 .🌘 {
-	background-image: linear-gradient(to right, #fd3 50%, #777);
+	background-image: linear-gradient(to right, #fc4 25%, #567 25%);
 }
 
 @media (hover: hover) {

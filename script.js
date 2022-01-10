@@ -128,6 +128,7 @@ function dealCards() {
 		card.classList.add("card");
 		inner.classList.add("card-inner");
 		front.classList.add("card-front", `${suit}`);
+		front.dataset.suit = suit;
 		front.textContent = suit;
 		back.classList.add("card-back");
 		inner.appendChild(front);
@@ -135,11 +136,16 @@ function dealCards() {
 		card.appendChild(inner);
 		board.appendChild(card);
 	});
+
+	// Convert emojis to Twemojis for consistency across devices
+	twemoji.parse(document.body);
 }
 
 // Check for match and handle result
 function processMatch() {
-	if (faceup[0].firstChild.textContent == faceup[1].firstChild.textContent) {
+	if (
+		faceup[0].firstChild.dataset.suit == faceup[1].firstChild.dataset.suit
+	) {
 		// Keep matches faceup
 		faceup[0].classList.add("match");
 		faceup[1].classList.add("match");
