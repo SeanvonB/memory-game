@@ -1,7 +1,6 @@
 // Globals
 const board = document.querySelector(".board");
 const clock = document.querySelector(".clock");
-const modal = document.querySelector(".modal");
 const moves = document.querySelector(".moves");
 const restart = document.querySelector(".restart");
 const score = document.querySelector(".score");
@@ -32,10 +31,13 @@ let timer = 0;
 
 // Create win modal and add to DOM
 function announceWin() {
+	let modal = document.createElement("div");
+	modal.classList.add("modal");
+
 	// Copy children from `star` element to create banner
 	let children = score.childNodes;
 	let ul = document.createElement("ul");
-	ul.classList.add("stars");
+	ul.classList.add("score");
 	children.forEach((child) => {
 		ul.appendChild(child.cloneNode(true));
 	});
@@ -46,6 +48,7 @@ function announceWin() {
 	li1.textContent = "You finished in";
 	modal.appendChild(li1);
 	let li2 = document.createElement("li");
+	li2.classList.add("clock");
 	if (seconds < 10) {
 		li2.textContent = `${minutes}:0${seconds}`;
 	} else {
@@ -63,6 +66,7 @@ function announceWin() {
 	button.textContent = "Play Again";
 	li4.appendChild(button);
 	modal.appendChild(li4);
+	board.appendChild(modal);
 }
 
 // Increment moveCounter and update score
@@ -80,7 +84,6 @@ function countMoves() {
 // Clear previous game and start new one
 function dealCards() {
 	// Clear previous game
-	while (modal.firstChild) modal.removeChild(modal.firstChild);
 	while (board.firstChild) board.removeChild(board.firstChild);
 	faceup.splice(0, faceup.length);
 	matchCounter = 0;
