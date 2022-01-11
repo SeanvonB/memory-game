@@ -22,6 +22,16 @@ body {
 	width: 100vw;
 }
 
+a {
+	color: #b22;
+	text-decoration: none;
+}
+
+a:active,
+a:visited {
+	color: #a22;
+}
+
 button {
 	align-items: center;
 	background-color: #b22;
@@ -45,16 +55,29 @@ button:active {
 	background-color: #a22;
 }
 
+footer,
 header {
 	align-items: center;
-	color: #fff;
 	display: flex;
-	font-size: 24px;
 	font-weight: bold;
+	justify-content: center;
+	text-align: center;
+	text-shadow: 0 -1px #fff, 1px 0 #fff, 0 -1px #fff, -1px 0 #fff,
+		-1px -1px #fff, 1px -1px #fff, 1px 1px #fff, -1px 1px #fff,
+		2px 2px 8px #111;
+}
+
+footer {
+	font-size: 16px;
+	height: 40px;
+	padding: 0 16px 8px;
+}
+
+header {
+	font-size: 24px;
 	justify-content: space-around;
 	max-width: 560px;
 	padding: 8px 16px 0;
-	text-align: center;
 	width: 100%;
 }
 
@@ -74,7 +97,7 @@ main {
 	flex-direction: column;
 	height: 100%;
 	justify-content: center;
-	max-height: 800px;
+	max-height: 880px;
 	padding: 16px 0 8px;
 	user-select: none;
 	width: 100%;
@@ -88,9 +111,9 @@ ul {
 	align-items: center;
 	display: flex;
 	flex-wrap: wrap;
-	height: calc(100% - 80px);
+	height: calc(100% - 120px);
 	justify-content: center;
-	max-height: 720px;
+	max-height: 880px;
 	max-width: 560px;
 	padding: 8px;
 	width: 100%;
@@ -314,15 +337,6 @@ ul {
 	transform: rotateY(180deg);
 }
 
-.clock,
-.move-counter {
-	color: #000;
-	cursor: default;
-	text-shadow: 0 -1px #fff, 1px 0 #fff, 0 -1px #fff, -1px 0 #fff,
-		-1px -1px #fff, 1px -1px #fff, 1px 1px #fff, -1px 1px #fff,
-		2px 2px 8px #111;
-}
-
 .move-counter {
 	display: flex;
 	justify-content: space-between;
@@ -419,6 +433,9 @@ ul {
 }
 
 @media (hover: hover) {
+	a:hover {
+		color: #c22;
+	}
 	button:hover:not(:active) {
 		background-color: #c22;
 	}
