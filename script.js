@@ -4,7 +4,44 @@ const clock = document.querySelector(".clock");
 const moves = document.querySelector(".moves");
 const restart = document.querySelector(".restart");
 const score = document.querySelector(".score");
-let deck = [
+let deck;
+let deckAnimal = [
+	"🐭",
+	"🐭",
+	"🐮",
+	"🐮",
+	"🐯",
+	"🐯",
+	"🐵",
+	"🐵",
+	"🐷",
+	"🐷",
+	"🐸",
+	"🐸",
+	"🐺",
+	"🐺",
+	"🐻",
+	"🐻",
+];
+let deckFruit = [
+	"🍅",
+	"🍅",
+	"🍆",
+	"🍆",
+	"🍇",
+	"🍇",
+	"🍈",
+	"🍈",
+	"🍊",
+	"🍊",
+	"🍌",
+	"🍌",
+	"🍑",
+	"🍑",
+	"🍒",
+	"🍒",
+];
+let deckMoon = [
 	"🌑",
 	"🌑",
 	"🌒",
@@ -23,6 +60,7 @@ let deck = [
 	"🌘",
 ];
 let faceup = [];
+let lastDeck;
 let matchCounter = 0;
 let minutes = 0;
 let moveCounter = 0;
@@ -31,12 +69,12 @@ let timer = 0;
 
 // Create win modal and add to DOM
 function announceWin() {
-	let modal = document.createElement("div");
+	const modal = document.createElement("div");
 	modal.classList.add("modal");
 
 	// Copy children from `star` element to create banner
+	const ul = document.createElement("ul");
 	let children = score.childNodes;
-	let ul = document.createElement("ul");
 	ul.classList.add("score");
 	children.forEach((child) => {
 		ul.appendChild(child.cloneNode(true));
@@ -44,7 +82,7 @@ function announceWin() {
 	modal.appendChild(ul);
 
 	// Add modal text content
-	let li1 = document.createElement("li");
+	const li1 = document.createElement("li");
 	li1.textContent = "You finished in";
 	modal.appendChild(li1);
 	let li2 = document.createElement("li");
@@ -55,13 +93,13 @@ function announceWin() {
 		li2.textContent = `${minutes}:${seconds}`;
 	}
 	modal.appendChild(li2);
-	let li3 = document.createElement("li");
+	const li3 = document.createElement("li");
 	li3.textContent = "Congratulations!";
 	modal.appendChild(li3);
 
 	// Add replay button
-	let li4 = document.createElement("li");
-	let button = document.createElement("button");
+	const li4 = document.createElement("li");
+	const button = document.createElement("button");
 	button.addEventListener("click", dealCards);
 	button.textContent = "Play Again";
 	li4.appendChild(button);
@@ -92,13 +130,30 @@ function dealCards() {
 	resetTimer();
 	resetStars();
 
-	// Shuffle deck and start new one
-	let shuffledDeck = shuffle(deck);
+	// Choose deck, shuffle it, and create cards
+	let decks = ["animal", "fruit", "moon"];
+	let selection;
+	while (deck === lastDeck) {
+		deck = decks[Math.floor(Math.random() * decks.length)];
+	}
+	switch (deck) {
+		case "animal":
+			selection = deckAnimal;
+			break;
+		case "fruit":
+			selection = deckFruit;
+			break;
+		case "moon":
+			selection = deckMoon;
+			break;
+	}
+	lastDeck = deck;
+	let shuffledDeck = shuffle(selection);
 	shuffledDeck.forEach((suit) => {
-		let card = document.createElement("li");
-		let inner = document.createElement("div");
-		let front = document.createElement("div");
-		let back = document.createElement("div");
+		const card = document.createElement("li");
+		const inner = document.createElement("div");
+		const front = document.createElement("div");
+		const back = document.createElement("div");
 
 		// Add listeners to flipping element: ".card-inner"
 		inner.addEventListener("click", function () {
@@ -121,20 +176,81 @@ function dealCards() {
 		// Assemble cards matching into the following template:
 		// <li class="card">
 		// 		<div class="card-inner">
-		//			<div class="card-front">`suit`</div>
-		//			<div class="card-back"></div>
+		//			<div class="card-front deck suit" data-suit="suit"></div>
+		//			<div class="card-back deck"></div>
 		//		</div>
 		// </li>
 		card.classList.add("card");
 		inner.classList.add("card-inner");
-		front.classList.add("card-front", `${suit}`);
+		front.classList.add("card-front", `${deck}`, `${suit}`);
 		front.dataset.suit = suit;
 		front.textContent = suit;
-		back.classList.add("card-back");
+		back.classList.add("card-back", `${deck}`);
 		inner.appendChild(front);
 		inner.appendChild(back);
 		card.appendChild(inner);
 		board.appendChild(card);
+
+		// Apply individual card styles
+		switch (suit) {
+			case "🐭":
+				front.style.backgroundColor = "#cdd";
+				break;
+			case "🐮":
+				front.style.backgroundColor = "#9ab";
+				break;
+			case "🐯":
+				front.style.backgroundColor = "#7a5";
+				break;
+			case "🐵":
+				front.style.backgroundColor = "#eab";
+				break;
+			case "🐷":
+				front.style.backgroundColor = "#b65";
+				break;
+			case "🐸":
+				front.style.backgroundColor = "#fc4";
+				break;
+			case "🐺":
+				front.style.backgroundColor = "#b64";
+				break;
+			case "🐻":
+				front.style.backgroundColor = "#678";
+				break;
+			case "🌑":
+				front.style.backgroundColor = "#567";
+				break;
+			case "🌒":
+				front.style.backgroundImage =
+					"linear-gradient(to right, #567 75%, #fc4 75%)";
+				break;
+			case "🌓":
+				front.style.backgroundImage =
+					"linear-gradient(to right, #567 50%, #fc4 50%)";
+				break;
+			case "🌔":
+				front.style.backgroundImage =
+					"linear-gradient(to right, #567 25%, #fc4 25%)";
+				break;
+			case "🌕":
+				front.style.backgroundColor = "#fc4";
+				break;
+			case "🌖":
+				front.style.backgroundImage =
+					"linear-gradient(to right, #fc4 75%, #567 75%)";
+				break;
+			case "🌗":
+				front.style.backgroundImage =
+					"linear-gradient(to right, #fc4 50%, #567 50%)";
+				break;
+			case "🌘":
+				front.style.backgroundImage =
+					"linear-gradient(to right, #fc4 25%, #567 25%)";
+				break;
+			default:
+				front.style.backgroundImage =
+					"linear-gradient(to bottom, #777 60%, #333 60%, #777 180%)";
+		}
 	});
 
 	// Convert emojis to Twemojis for consistency across devices
